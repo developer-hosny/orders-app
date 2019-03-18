@@ -1,47 +1,104 @@
 import 'package:flutter/material.dart';
 import 'products.dart';
-import 'product_control.dart';
 
-class ProductManager extends StatefulWidget {
-  final Map<String, String> startingProduct;
-  ProductManager({this.startingProduct});
+class ProductManager extends StatelessWidget {
+  final List<Map<String, dynamic>> products;
 
-  @override
-  State<StatefulWidget> createState() {
-    return _ProductManagerState();
-  }
-}
+  ProductManager(this.products);
 
-class _ProductManagerState extends State<ProductManager> {
-  List<Map<String, String>> _products = [];
-
-  void initState() {
-    super.initState();
-    if(widget.startingProduct != null){
-      _products.add(widget.startingProduct);
-    }
-  }
-
-  void _addProduct(Map<String, String> product) {
-      setState(() {
-        _products.add(product);
-      });
-  }
-
-  void _deleteProduct(index){
-    setState(() {
-     _products.removeAt(index); 
-    });
+  adsListView() {
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: <Widget>[
+        SizedBox(width: 10.0),
+        Container(
+          width: 160.0,
+          height: 200.0,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage('assets/food-2.jpg'),
+            ),
+          ),
+        ),
+        SizedBox(width: 10.0),
+        Container(
+          width: 160.0,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage('assets/food.jpg'),
+            ),
+          ),
+        ),
+        SizedBox(width: 10.0),
+        Container(
+          width: 160.0,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage('assets/food-2.jpg'),
+            ),
+          ),
+        ),
+        SizedBox(width: 10.0),
+        Container(
+          width: 160.0,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage('assets/food.jpg'),
+            ),
+          ),
+        ),
+        SizedBox(width: 10.0),
+        Container(
+          width: 160.0,
+             decoration: BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage('assets/food-2.jpg'),
+            ),
+          ),
+        ),
+        SizedBox(width: 10.0),
+        Container(
+          width: 160.0,
+          color: Colors.red,
+        ),
+        SizedBox(width: 10.0),
+        Container(
+          width: 160.0,
+          color: Colors.blue,
+        ),
+        SizedBox(width: 10.0),
+        Container(
+          width: 160.0,
+          color: Colors.green,
+        ),
+        SizedBox(width: 10.0),
+        Container(
+          width: 160.0,
+          color: Colors.yellow,
+        ),
+        SizedBox(width: 10.0),
+        Container(
+          width: 160.0,
+          color: Colors.orange,
+        ),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(children: [
       Container(
-        margin: EdgeInsets.all(10.0),
-        child: ProductControl(_addProduct),
+        margin: EdgeInsets.only(top:10.0),
+        child: adsListView(),
+        height: 100.0,
       ),
-      Expanded(child: Products(_products, deleteProduct: _deleteProduct,))
+      Expanded(child: Products(products))
     ]);
   }
 }
