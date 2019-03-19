@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ProductCreatePage extends StatefulWidget {
   final Function addProduct;
@@ -12,62 +13,106 @@ class ProductCreatePage extends StatefulWidget {
 }
 
 class _ProductCreatePageState extends State<ProductCreatePage> {
-  String _titleValue = '';
-  String _descriptionValue = '';
-  double _priceValue;
+ final Map<String, dynamic> _formData = {
+   'title': null,
+   'description': null,
+   'price': null,
+   'imageUrl': 'assets/food.jpg'
+ };
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  Widget _buildTitleTextField() {
+    return TextFormField(
+        decoration: InputDecoration(labelText: 'Title'),
+        validator: (String value) {
+          if (value.isEmpty || value.length < 3) {
+            return 'Title is required';
+          }
+        },
+        onSaved: (String value) {
+            _formData['title'] = value;
+        });
+  }
+
+  Widget _buildDescriptionTextField() {
+    return TextFormField(
+        maxLines: 4,
+        decoration: InputDecoration(labelText: 'Description'),
+        validator: (String value) {
+          if (value.isEmpty || value.length < 3) {
+            return 'Description is required';
+          }
+        },
+        onSaved: (String value) {
+            _formData['description'] = value;
+        });
+  }
+
+  Widget _buildPriceTextField() {
+    return TextFormField(
+        textAlign: TextAlign.center,
+        // keyboardType: TextInputType.number,
+        keyboardType: TextInputType.numberWithOptions(decimal: true),
+// inputFormatters: [BlacklistingTextInputFormatter(new RegExp('[\\-|\\ ]'))],
+        decoration: InputDecoration(
+          labelText: 'Price',
+          prefixText: 'AED',
+        ),
+        validator: (String value) {
+          if (value.isEmpty ||
+              !RegExp(r'^(?:[1-9]\d*|0)?(?:\.\d+)?$').hasMatch(value)) {
+            return 'Price is required and should be a number';
+          }
+        },
+        onSaved: (String value) {
+            _formData['price'] = double.parse(value);
+        });
+  }
+
+  void _submitForm() {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+
+    _formKey.currentState.save();
+
+    widget.addProduct(_formData);
+    Navigator.pushReplacementNamed(context, '/products');
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(10.0),
-      child: ListView(
-        children: <Widget>[
-          TextField(
-            decoration: InputDecoration(labelText: 'Product Title'),
-            onChanged: (String value) {
-              setState(() {
-                _titleValue = value;
-              });
-            },
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final double targetWith = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
+    final double targetPadding = deviceWidth - targetWith;
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: targetPadding),
+          margin: EdgeInsets.all(10.0),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              children: <Widget>[
+                _buildTitleTextField(),
+                _buildDescriptionTextField(),
+                _buildPriceTextField(),
+                SizedBox(
+                  height: 10.0,
+                ),
+                RaisedButton(
+                  child: Text('Save'),
+                  textColor: Colors.white,
+                  color: Theme.of(context).primaryColor,
+                  onPressed: _submitForm,
+                )
+              ],
+            ),
           ),
-          TextField(
-            maxLines: 4,
-            decoration: InputDecoration(labelText: 'Description'),
-            onChanged: (String value) {
-              setState(() {
-                _descriptionValue = value;
-              });
-            },
-          ),
-          TextField(
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(labelText: 'Price'),
-            onChanged: (String value) {
-              setState(() {
-                _priceValue = double.parse(value);
-              });
-            },
-          ),
-          SizedBox(
-            height: 10.0,
-          ),
-          RaisedButton(
-            child: Text('Save'),
-            color: Theme.of(context).accentColor,
-            textColor: Colors.white,
-            onPressed: () {
-              final Map<String, dynamic> product = {
-                'title': _titleValue,
-                'description': _descriptionValue,
-                'price': _priceValue,
-                'imageUrl': 'assets/food.jpg'
-              };
-              widget.addProduct(product);
-              Navigator.pushReplacementNamed(context, '/products');
-            },
-          )
-        ],
-      ),
-    );
+        ));
   }
 }

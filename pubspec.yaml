@@ -44,7 +44,24 @@ flutter:
   assets:
   - assets/food.jpg
   - assets/food-pattern.gif
+  - assets/food-1.jpg
   - assets/food-2.jpg
+  - assets/food-3.jpg
+  - assets/food-4.jpg
+  - assets/food-5.jpg
+  - assets/food-6.jpg
+  - assets/food-7.jpg
+
+  - assets/subway.jpg
+  - assets/kfc.gif
+  - assets/Pizza_Hut_logo.png
+  - assets/dominos.jpg
+  - assets/burgerking.png
+  - assets/churchs.png
+  
+  
+  
+
   # - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
