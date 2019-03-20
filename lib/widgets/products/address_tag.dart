@@ -9,9 +9,6 @@ class AddressTag extends StatelessWidget {
     return Container(
       alignment: Alignment.centerLeft,
       padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 1.0),
-      // decoration: BoxDecoration(
-      //     border: Border.all(color: Colors.grey),
-      //     borderRadius: BorderRadius.circular(4.0)),
       child: Text(
         address,
         style: TextStyle(fontSize: 12.0),

@@ -12,20 +12,10 @@ class ProductsPage extends StatefulWidget {
 }
 
 class _ProductsPageState extends State<ProductsPage> {
-  // FocusNode myFocusNode;
-
   @override
   void initState() {
     super.initState();
   }
-
-  // @override
-  // void dispose() {
-  //   // Clean up the focus node when the Form is disposed
-  //   myFocusNode.dispose();
-
-  //   super.dispose();
-  // }
 
   adsListView() {
     return ListView(
@@ -37,7 +27,6 @@ class _ProductsPageState extends State<ProductsPage> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(3.0),
             border: Border.all(color: Colors.lime),
-            
             image: DecorationImage(
               fit: BoxFit.cover,
               image: AssetImage('assets/subway.jpg'),
@@ -147,40 +136,22 @@ class _ProductsPageState extends State<ProductsPage> {
       behavior: HitTestBehavior.opaque,
       onTap: () {
         FocusScope.of(context).requestFocus(new FocusNode());
-        // FocusScope.of(context).requestFocus(node)
       },
       child: Scaffold(
         drawer: _buildSideDrawer(context),
         appBar: AppBar(
-            title:
-                // Container(
-                //   height: 40.0,
-                // decoration: BoxDecoration(border: Border.all(color: Colors.white)),
-                // child:
-                TextField(
-                    style: TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      labelText: 'Search',
-                      // fillColor: Colors.white,
-                      labelStyle: TextStyle(color: Colors.white),
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: Colors.white,
-                      ),
-                      // border: OutlineInputBorder(
-                      //   borderRadius: BorderRadius.circular(2.0),
-                      //   borderSide: BorderSide(color: Colors.white),
-                      // ),
-                    ),
-                    onChanged: (value) {})), //Text('EasyList'),
-
-        // actions: <Widget>[
-        //   IconButton(
-        //     icon: Icon(Icons.favorite),
-        //     onPressed: () {},
-        //   ),
-        // ],
-        // ),
+            title: TextField(
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: 'Search',
+                  // fillColor: Colors.white,
+                  labelStyle: TextStyle(color: Colors.white),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Colors.white,
+                  ),
+                ),
+                onChanged: (value) {})),
         body: Column(children: [
           Container(
             margin: EdgeInsets.symmetric(horizontal: 0.0, vertical: 10.0),

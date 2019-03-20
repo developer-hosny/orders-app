@@ -7,7 +7,7 @@ import './pages/product.dart';
 // import './products.dart';
 
 void main() {
-  // final bool debugMode = false;
+  // final bool debugMode = true;
   // debugPaintSizeEnabled = debugMode;
   // debugPaintBaselinesEnabled = debugMode;
   // debugPaintPointersEnabled = debugMode;
@@ -24,16 +24,17 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   List<Map<String, dynamic>> _products = [];
+  final bool statrtWithLoginPage = false;
 
   @override
   void initState() {
     // test only
     for (var i = 1; i < 8; i++) {
       final Map<String, dynamic> product = {
-        'title': 'Restaurant Name',
+        'title': 'Restaurant Name' + i.toString(),
         'description':
             'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. ..... Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-        'imageUrl': 'assets/food-'+i.toString()+'.jpg',
+        'imageUrl': 'assets/food-' + i.toString() + '.jpg',
         'price': (i * 5).toDouble()
       };
       _addProduct(product);
@@ -45,6 +46,12 @@ class _MyAppState extends State<MyApp> {
   void _addProduct(Map<String, dynamic> product) {
     setState(() {
       _products.add(product);
+    });
+  }
+
+  void _updateProduct(int index, Map<String, dynamic> product) {
+    setState(() {
+      _products[index] = product;
     });
   }
 
@@ -69,10 +76,11 @@ class _MyAppState extends State<MyApp> {
 
       // home: AuthPage(),
       routes: {
-        '/': (BuildContext context) => AuthPage(),
+        '/': (BuildContext context) =>
+            statrtWithLoginPage == true ? AuthPage() : ProductsPage(_products),
         '/products': (BuildContext context) => ProductsPage(_products),
-        '/admin': (BuildContext context) =>
-            ProductsAdminPage(_addProduct, _deleteProduct),
+        '/admin': (BuildContext context) => ProductsAdminPage(
+            _addProduct, _updateProduct, _deleteProduct, _products),
       },
       onGenerateRoute: (RouteSettings settings) {
         final List<String> pathElement = settings.name.split('/');

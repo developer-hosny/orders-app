@@ -60,8 +60,6 @@ class ProductCard extends StatelessWidget {
               children: <Widget>[
                 Image.asset(
                   product['imageUrl'],
-                  // colorBlendMode: BlendMode.softLight,
-                  // color: Colors.lightGreen,
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 10.0),
