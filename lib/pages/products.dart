@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../widgets/products/products.dart';
+import 'package:scoped_model/scoped_model.dart';
+import '../scope-models/main.dart';
 
 class ProductsPage extends StatefulWidget {
-  final List<Map<String, dynamic>> products;
-  ProductsPage(this.products);
   @override
   State<StatefulWidget> createState() {
     return _ProductsPageState();
@@ -140,18 +139,32 @@ class _ProductsPageState extends State<ProductsPage> {
       child: Scaffold(
         drawer: _buildSideDrawer(context),
         appBar: AppBar(
-            title: TextField(
-                style: TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  labelText: 'Search',
-                  // fillColor: Colors.white,
-                  labelStyle: TextStyle(color: Colors.white),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: Colors.white,
-                  ),
-                ),
-                onChanged: (value) {})),
+          actions: <Widget>[
+            ScopedModelDescendant(builder:
+                (BuildContext context, Widget child, MainModel model) {
+              return IconButton(
+                icon: Icon(model.displayFavoritesOnly
+                    ? Icons.favorite
+                    : Icons.favorite_border),
+                onPressed: () {
+                  model.toggleDisplayMode();
+                },
+              );
+            })
+          ],
+          // TextField(
+          //     style: TextStyle(color: Colors.white),
+          //     decoration: InputDecoration(
+          //       labelText: 'Search',
+          //       // fillColor: Colors.white,
+          //       labelStyle: TextStyle(color: Colors.white),
+          //       prefixIcon: Icon(
+          //         Icons.search,
+          //         color: Colors.white,
+          //       ),
+          //     ),
+          //     onChanged: (value) {})
+        ),
         body: Column(children: [
           Container(
             margin: EdgeInsets.symmetric(horizontal: 0.0, vertical: 10.0),
@@ -159,7 +172,7 @@ class _ProductsPageState extends State<ProductsPage> {
             height: 100.0,
           ),
           Expanded(
-            child: Products(widget.products),
+            child: Products(),
           ),
           // TextField(focusNode: myFocusNode),
         ]),

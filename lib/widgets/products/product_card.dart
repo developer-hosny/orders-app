@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:orders_app/models/product.dart';
 import './price_tag.dart';
 import './rate_tag.dart';
 import '../ui_elements/title_default.dart';
 import './address_tag.dart';
+import 'package:scoped_model/scoped_model.dart';
+import '../../scope-models/main.dart';
 
 class ProductCard extends StatelessWidget {
-  final Map<String, dynamic> product;
+  final Product product;
   final int productIndex;
 
   ProductCard(this.product, this.productIndex);
@@ -14,9 +17,9 @@ class ProductCard extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
-        TitleDefault(product['title']),
+        TitleDefault(product.title),
         SizedBox(width: 8.0),
-        RateTag(product['price'].toString()),
+        RateTag(product.price.toString()),
       ],
     );
   }
@@ -33,14 +36,19 @@ class ProductCard extends StatelessWidget {
                     context, '/product/' + productIndex.toString()),
               },
         ),
-        IconButton(
-          icon: Icon(Icons.favorite_border),
-          color: Theme.of(context).primaryColor,
-          onPressed: () => {
-                Navigator.pushNamed<bool>(
-                    context, '/product/' + productIndex.toString()),
-              },
-        )
+        ScopedModelDescendant<MainModel>(
+            builder: (BuildContext context, Widget child, MainModel model) {
+          return IconButton(
+            icon: Icon(model.allProducts[productIndex].isFavorite
+                ? Icons.favorite
+                : Icons.favorite_border),
+            color: Colors.red,
+            onPressed: () {
+              model.selectProduct(productIndex);
+              model.toggelProductFavoriteStatus();
+            },
+          );
+        })
       ],
     );
   }
@@ -59,7 +67,7 @@ class ProductCard extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 Image.asset(
-                  product['imageUrl'],
+                  product.image,
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 10.0),
@@ -69,6 +77,7 @@ class ProductCard extends StatelessWidget {
             ),
           ),
           AddressTag('Sharejah, UAE'),
+          Text(product.userEmail),
           _buildActionButtons(context),
         ],
       ),

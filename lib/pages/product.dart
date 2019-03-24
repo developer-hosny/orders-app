@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:orders_app/models/product.dart';
 import 'dart:async';
 import '../widgets/ui_elements/title_default.dart';
-import '../widgets/products/rate_tag.dart';
-class ProductPage extends StatelessWidget {
-  final String title;
-  final String imageUrl;
-  final double price;
-  final String description;
+// import '../widgets/products/rate_tag.dart';
+import 'package:scoped_model/scoped_model.dart';
+import '../scope-models/main.dart';
 
-  ProductPage(this.title, this.imageUrl, this.price, this.description);
+class ProductPage extends StatelessWidget {
+  final int productIndex;
+  ProductPage(this.productIndex);
 
   _showWarningDialog(BuildContext context) {
     showDialog(
@@ -36,7 +36,7 @@ class ProductPage extends StatelessWidget {
         });
   }
 
-  Widget _buildAddressPriceRow() {
+  Widget _buildAddressPriceRow(double price) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -46,11 +46,11 @@ class ProductPage extends StatelessWidget {
               'Sharjah, UAE',
               style: TextStyle(fontFamily: 'Cairo', color: Colors.grey),
             )),
-          // RateTag(),
+        // RateTag(),
         Container(
           margin: EdgeInsets.only(right: 10.0),
           child: Text(
-             price.toString(),
+            price.toString(),
             style: TextStyle(fontFamily: 'Cairo', color: Colors.grey),
           ),
         ),
@@ -65,9 +65,13 @@ class ProductPage extends StatelessWidget {
         Navigator.pop(context, false);
         return Future.value(false);
       },
-      child: Scaffold(
+      child: ScopedModelDescendant<MainModel>(
+          builder: (BuildContext context, Widget child, MainModel model) {
+        final Product product = model.allProducts[productIndex];
+
+        return Scaffold(
           appBar: AppBar(
-            title: Text(title,
+            title: Text(product.title,
                 style: TextStyle(
                     fontSize: 26.0,
                     fontFamily: 'Cairo',
@@ -77,23 +81,25 @@ class ProductPage extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Image.asset(imageUrl),
+                Image.asset(product.image),
                 Container(
                   padding: EdgeInsets.all(10.0),
-                  child: TitleDefault(title),
+                  child: TitleDefault(product.title),
                 ),
-                _buildAddressPriceRow(),
+                _buildAddressPriceRow(product.price),
                 Container(
                   padding: EdgeInsets.all(10.0),
                   child: Text(
-                    description,
+                    product.description,
                     textAlign: TextAlign.justify,
                   ),
                   alignment: Alignment.center,
                 ),
               ],
             )
-          ])),
+          ]),
+        );
+      }),
     );
   }
 }
