@@ -7,6 +7,7 @@ import './pages/products.dart';
 import './pages/product.dart';
 import './models/product.dart';
 import 'package:scoped_model/scoped_model.dart';
+import './pages/restaurants.dart';
 
 void main() {
   // final bool debugMode = true;
@@ -26,7 +27,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   List<Product> _products = [];
-  final bool statrtWithLoginPage = true;
+  final bool statrtWithLoginPage = false;
 
   @override
   void initState() {
@@ -63,7 +64,7 @@ class _MyAppState extends State<MyApp> {
       // home: AuthPage(),
       routes: {
         '/': (BuildContext context) =>
-            statrtWithLoginPage == true ? AuthPage() : ProductsPage(),
+            statrtWithLoginPage == true ? AuthPage() : RestaurantsPage(), //ProductsPage(),
         '/products': (BuildContext context) => ProductsPage(),
         '/admin': (BuildContext context) => ProductsAdminPage(),
       },
