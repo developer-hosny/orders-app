@@ -52,7 +52,13 @@ flutter:
   - assets/food-5.jpg
   - assets/food-6.jpg
   - assets/food-7.jpg
-
+  #Icons
+  - assets/icons/passion.png
+  - assets/icons/sparkles.png
+  - assets/icons/discount.png
+  - assets/icons/serve.png
+  - assets/icons/medal.png
+  
   - assets/subway.jpg
   - assets/kfc.gif
   - assets/Pizza_Hut_logo.png

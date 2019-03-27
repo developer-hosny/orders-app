@@ -65,6 +65,7 @@ class _MyAppState extends State<MyApp> {
       routes: {
         '/': (BuildContext context) =>
             statrtWithLoginPage == true ? AuthPage() : RestaurantsPage(), //ProductsPage(),
+        '/restaurants': (BuildContext context) => RestaurantsPage(),
         '/products': (BuildContext context) => ProductsPage(),
         '/admin': (BuildContext context) => ProductsAdminPage(),
       },

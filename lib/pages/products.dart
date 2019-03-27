@@ -11,103 +11,6 @@ class ProductsPage extends StatefulWidget {
 }
 
 class _ProductsPageState extends State<ProductsPage> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  adsListView() {
-    return ListView(
-      scrollDirection: Axis.horizontal,
-      children: <Widget>[
-        SizedBox(width: 5.0),
-        Container(
-          width: 120.0,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(3.0),
-            border: Border.all(color: Colors.lime),
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage('assets/subway.jpg'),
-            ),
-          ),
-        ),
-        SizedBox(width: 10.0),
-        Container(
-          width: 120.0,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(3.0),
-            border: Border.all(color: Colors.lime),
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage('assets/kfc.gif'),
-            ),
-          ),
-        ),
-        SizedBox(width: 10.0),
-        Container(
-          width: 120.0,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(3.0),
-            border: Border.all(color: Colors.lime),
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage('assets/Pizza_Hut_logo.png'),
-            ),
-          ),
-        ),
-        SizedBox(width: 10.0),
-        Container(
-          width: 120.0,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(3.0),
-            border: Border.all(color: Colors.lime),
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage('assets/burgerking.png'),
-            ),
-          ),
-        ),
-        SizedBox(width: 10.0),
-        Container(
-          width: 120.0,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(3.0),
-            border: Border.all(color: Colors.lime),
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage('assets/churchs.png'),
-            ),
-          ),
-        ),
-        SizedBox(width: 10.0),
-        Container(
-          width: 120.0,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(3.0),
-            border: Border.all(color: Colors.lime),
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage('assets/food-6.jpg'),
-            ),
-          ),
-        ),
-        SizedBox(width: 10.0),
-        Container(
-          width: 120.0,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(3.0),
-            border: Border.all(color: Colors.lime),
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage('assets/food-7.jpg'),
-            ),
-          ),
-        ),
-        SizedBox(width: 10.0),
-      ],
-    );
-  }
 
   Widget _buildSideDrawer(BuildContext context) {
     return Drawer(
@@ -166,11 +69,6 @@ class _ProductsPageState extends State<ProductsPage> {
           //     onChanged: (value) {})
         ),
         body: Column(children: [
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 0.0, vertical: 10.0),
-            child: adsListView(),
-            height: 100.0,
-          ),
           Expanded(
             child: Products(),
           ),
