@@ -89,50 +89,55 @@ class _AuthPageState extends State<AuthPage> {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double targetWith = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Login'),
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: _buildBackgroundImage(),
-        ),
-        padding: EdgeInsets.all(10.0),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Container(
-              width: targetWith,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.lime),
-                  borderRadius: BorderRadius.circular(5.0)),
-              padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-              child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: <Widget>[
-                      _buildEmailTextField(),
-                      SizedBox(
-                        height: 10.0,
-                      ),
-                      _buildPasswordTextField(),
-                      _buildSwitchRememberMe(),
-                      SizedBox(
-                        height: 10.0,
-                      ),
-                      ScopedModelDescendant(
-                        builder: (BuildContext context, Widget child,
-                            MainModel model) {
-                          return RaisedButton(
-                            child: Text('LOGIN'),
-                            color: Theme.of(context).primaryColor,
-                            textColor: Colors.white,
-                            onPressed: () => _submitForm(model.login),
-                          );
-                        },
-                      ),
-                    ],
-                  )),
+    return WillPopScope(
+      onWillPop: (){
+        Navigator.pushReplacementNamed(context, '/restaurants');
+      },
+      child: Scaffold(
+        // appBar: AppBar(
+        //   title: Text('Login'),
+        // ),
+        body: Container(
+          decoration: BoxDecoration(
+            image: _buildBackgroundImage(),
+          ),
+          padding: EdgeInsets.all(10.0),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Container(
+                width: targetWith,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.lime),
+                    borderRadius: BorderRadius.circular(5.0)),
+                padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: <Widget>[
+                        _buildEmailTextField(),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        _buildPasswordTextField(),
+                        _buildSwitchRememberMe(),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        ScopedModelDescendant(
+                          builder: (BuildContext context, Widget child,
+                              MainModel model) {
+                            return RaisedButton(
+                              child: Text('LOGIN'),
+                              color: Theme.of(context).primaryColor,
+                              textColor: Colors.white,
+                              onPressed: () => _submitForm(model.login),
+                            );
+                          },
+                        ),
+                      ],
+                    )),
+              ),
             ),
           ),
         ),

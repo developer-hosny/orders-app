@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../models/product.dart';
 import '../models/user.dart';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 mixin ConnectedProductsModel on Model {
   List<Product> _products = [];
   User _authenticatedUser;
@@ -10,13 +11,26 @@ mixin ConnectedProductsModel on Model {
 
   void addProduct(
       String title, String description, String image, double price) {
+    Map<String, dynamic> productData = {
+      'title': title,
+      'description': description,
+      'image': '',
+      'price': price,
+    };
+    http.post(
+        'https://firestore.googleapis.com/v1/projects/orders-app-d0c2a/databases/default/decoumnets/products',
+        body: json.encode(productData));
+
     final Product newProduct = Product(
         title: title,
         description: description,
         image: image,
         price: price,
-        userEmail: _authenticatedUser.email,
-        userId: _authenticatedUser.id);
+        userEmail: 'a@a.com',
+        userId: '1'
+        // userEmail: _authenticatedUser.email,
+        // userId: _authenticatedUser.id
+        );
     _products.add(newProduct);
     notifyListeners();
   }

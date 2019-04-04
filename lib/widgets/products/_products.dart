@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:orders_app/models/product.dart';
+import '../../models/product.dart';
 // import 'package:orders_app/models/product.dart';
 
 import 'package:scoped_model/scoped_model.dart';
@@ -7,7 +7,6 @@ import './product_card.dart';
 import '../../scope-models/main.dart';
 
 class Products extends StatelessWidget {
-
 
   Widget _buildProductList(List<Product> products) {
     Widget productCard;

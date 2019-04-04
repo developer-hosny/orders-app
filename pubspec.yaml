@@ -24,6 +24,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   scoped_model: ^1.0.1
+  http: ^0.12.0+1
 
 dev_dependencies:
   flutter_test:
@@ -58,7 +59,10 @@ flutter:
   - assets/icons/discount.png
   - assets/icons/serve.png
   - assets/icons/medal.png
-  
+  - assets/icons/scooter.png
+  - assets/icons/search.png
+  - assets/icons/profile.png
+ 
   - assets/subway.jpg
   - assets/kfc.gif
   - assets/Pizza_Hut_logo.png

@@ -1,79 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+// import '../models/restaurant.dart';
+import '../models/user.dart';
+import '../scope-models/main.dart';
 
-class RestaurantsPage extends StatelessWidget {
-  final List<Map<String, dynamic>> _restaurants = [
-    {
-      'title': 'Al Bait Al Malaki Mandi',
-      'type': 'mandy, mazbi, madfon',
-      'per': 20.0,
-      'min': 100.0,
-      'image': 'assets/food-1.jpg',
-      'rate': 4.2
-    },
-    {
-      'title': 'Falafil Faryha Cfetria',
-      'per': 20.0,
-      'min': 100.0,
-      'type': 'Lebnanese, Arabian, Pizza, Grill',
-      'image': 'assets/food-2.jpg',
-      'rate': 3.2
-    },
-    {
-      'title': 'Al Bait Al Malaki Mandi',
-      'type': 'mandy, mazbi, madfon',
-      'per': 20.0,
-      'min': 100.0,
-      'image': 'assets/food-1.jpg',
-      'rate': 5.0
-    },
-    {
-      'title': 'Falafil Faryha Cfetria',
-      'per': 20.0,
-      'min': 100.0,
-      'type': 'Lebnanese, Arabian, Pizza, Grill',
-      'image': 'assets/food-2.jpg',
-      'rate': 3.2
-    },
-    {
-      'title': 'Al Bait Al Malaki Mandi',
-      'type': 'mandy, mazbi, madfon',
-      'per': 20.0,
-      'min': 100.0,
-      'image': 'assets/food-1.jpg',
-      'rate': 4.2
-    },
-    {
-      'title': 'Falafil Faryha Cfetria',
-      'per': 20.0,
-      'min': 100.0,
-      'type': 'Lebnanese, Arabian, Pizza, Grill',
-      'image': 'assets/food-2.jpg',
-      'rate': 4.2
-    },
-    {
-      'title': 'Al Bait Al Malaki Mandi',
-      'type': 'mandy, mazbi, madfon',
-      'per': 20.0,
-      'min': 100.0,
-      'image': 'assets/food-1.jpg',
-      'rate': 4.2
-    },
-    {
-      'title': 'Falafil Faryha Cfetria',
-      'per': 20.0,
-      'min': 100.0,
-      'type': 'Lebnanese, Arabian, Pizza, Grill',
-      'image': 'assets/food-2.jpg',
-      'rate': 4.2
-    }
-  ];
+class RestaurantsPage extends StatefulWidget {
+  @override
+  _RestaurantsPageState createState() => _RestaurantsPageState();
+}
+
+class _RestaurantsPageState extends State<RestaurantsPage> {
+  User _authenticatedUser;
 
   Widget _buildAdsListView() {
     return Column(
       children: <Widget>[
         Container(
           alignment: Alignment.centerLeft,
-          margin: EdgeInsets.only(top: 90.0, left: 10.0),
+          margin: EdgeInsets.only(top: 100.0, left: 10.0),
           child: Row(
             children: <Widget>[
               Image(
@@ -197,11 +141,11 @@ class RestaurantsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildRestaurantCard(BuildContext context, int index) {
+  Widget _buildRestaurantCard(
+      BuildContext context, int index, MainModel model) {
     return GestureDetector(
       onTap: () {
-        print(_restaurants[index]['title']);
-        // Navigator.pushReplacementNamed(context, '/products');
+        print(model.allRestaurants[index].title);
         Navigator.pushNamed(context, '/products');
       },
       child: Card(
@@ -222,7 +166,7 @@ class RestaurantsPage extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: new BorderRadius.circular(8.0),
                       child: Image.asset(
-                        _restaurants[index]['image'],
+                        model.allRestaurants[index].image,
                         height: 92.0,
                       ),
                     ),
@@ -239,7 +183,7 @@ class RestaurantsPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          _restaurants[index]['title'],
+                          model.allRestaurants[index].title,
                           textAlign: TextAlign.left,
                           style: TextStyle(
                               fontFamily: 'Cairo',
@@ -248,32 +192,70 @@ class RestaurantsPage extends StatelessWidget {
                               color: Colors.black87),
                         ),
                         Text(
-                          _restaurants[index]['type'],
+                          model.allRestaurants[index].type,
                           textAlign: TextAlign.left,
                           style: TextStyle(
                               fontFamily: 'Cairo',
                               fontSize: 11.0,
                               color: Colors.black54),
                         ),
-                        Text(
-                          'AED' +
-                              _restaurants[index]['per'].toString() +
-                              ' per person',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              fontFamily: 'Cairo',
-                              fontSize: 10.0,
-                              color: Colors.grey),
+                        Row(
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.only(right: 2.0),
+                              padding: EdgeInsets.all(2.0),
+                              decoration: BoxDecoration(
+                                color: Colors.orange.shade200,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Text(
+                                '\$',
+                                style: TextStyle(
+                                    fontSize: 8.0,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Text(
+                              'AED' +
+                                  model.allRestaurants[index].per.toString() +
+                                  ' per person',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  fontFamily: 'Cairo',
+                                  fontSize: 10.0,
+                                  color: Colors.grey),
+                            ),
+                          ],
                         ),
-                        Text(
-                          'AED' +
-                              _restaurants[index]['min'].toString() +
-                              ' min order',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              fontFamily: 'Cairo',
-                              fontSize: 10.0,
-                              color: Colors.grey),
+                        Row(
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.only(right: 2.0),
+                              padding: EdgeInsets.all(2.0),
+                              decoration: BoxDecoration(
+                                color: Colors.red.shade200,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Text(
+                                '\$',
+                                style: TextStyle(
+                                    fontSize: 8.0,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Text(
+                              'AED' +
+                                  model.allRestaurants[index].min.toString() +
+                                  ' min order',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  fontFamily: 'Cairo',
+                                  fontSize: 10.0,
+                                  color: Colors.grey),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -292,7 +274,7 @@ class RestaurantsPage extends StatelessWidget {
                         color: Colors.lime,
                         borderRadius: BorderRadius.circular(5.0)),
                     child: Text(
-                      _restaurants[index]['rate'].toString(),
+                      model.allRestaurants[index].rate.toString(),
                       style: TextStyle(
                           fontFamily: 'Cairo',
                           color: Colors.white,
@@ -309,50 +291,106 @@ class RestaurantsPage extends StatelessWidget {
     );
   }
 
+  Widget _buildSideDrawer(BuildContext context) {
+    return Drawer(
+      child: Column(
+        children: <Widget>[
+          AppBar(
+            automaticallyImplyLeading: false,
+            title: Text('Orders App'),
+          ),
+          ListTile(
+            leading: Icon(Icons.account_circle),
+            title: Text('Login'),
+            onTap: () => {
+                  Navigator.pushReplacementNamed(context, '/login'),
+                },
+          ),
+          ListTile(
+            leading: Icon(Icons.edit),
+            title: Text('Manage Products'),
+            onTap: () => {
+                  Navigator.pushReplacementNamed(context, '/admin'),
+                },
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _toggleDrawerMenu(BuildContext context) {
+    Scaffold.of(context).openDrawer();
+    // _toggleDrawer == false
+    //     ? Scaffold.of(context).openDrawer()
+    //     :(_);
+    // _toggleDrawer = !_toggleDrawer;
+  }
+
   Widget _buildSearch(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
-    final double targetWith = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
+    final double targetWith = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.80;
 
     return Positioned(
       top: 0.0,
       width: MediaQuery.of(context).size.width,
-      
-      child: Center(child: Container(
-        decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(
-              color: Colors.lime,
-            ),
-            borderRadius: BorderRadius.circular(5.0)),
-        padding: EdgeInsets.all(8.0),
-        margin:
-            EdgeInsets.only(top: MediaQuery.of(context).viewInsets.top + 30),
-        width: targetWith,
-        height: 50.0,
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 10.0),
+        color: Colors.white,
+        // width: targetWith,
+        // height: 100.0,
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Flexible(
-              flex: 2,
-              child: TextFormField(
-                textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 15.0, color: Colors.black87),
-                decoration: InputDecoration(
-                    contentPadding: new EdgeInsets.symmetric(vertical: 0.0),
-                    border: InputBorder.none,
-                    prefixIcon: Padding(
-                      padding: EdgeInsets.all(0.0),
-                      child: Icon(
-                        Icons.search,
-                        color: Colors.grey,
-                      ), // icon is 48px widget.
+            IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: () {
+                _toggleDrawerMenu(context);
+              },
+            ),
+            Container(
+              width: targetWith,
+              height: 50.0,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.lime,
+                  ),
+                  borderRadius: BorderRadius.circular(5.0)),
+              padding: EdgeInsets.all(8.0),
+              margin: EdgeInsets.only(
+                  top: MediaQuery.of(context).viewInsets.top + 30, right: 10.0),
+              child: Row(
+                children: <Widget>[
+                  Flexible(
+                    flex: 1,
+                    child: TextFormField(
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontSize: 15.0, color: Colors.black87),
+                      decoration: InputDecoration(
+                          contentPadding:
+                              new EdgeInsets.symmetric(vertical: 0.0),
+                          border: InputBorder.none,
+                          prefixIcon: Padding(
+                            padding: EdgeInsets.all(0.0),
+                            child: Icon(
+                              Icons.search,
+                              color: Colors.grey,
+                            ), // icon is 48px widget.
+                          ),
+                          hintText: 'Search for restaurants, dishes...',
+                          hintStyle: TextStyle(
+                            fontSize: 11.0,
+                          )),
                     ),
-                    hintText: 'Search for restaurants, dishes...',
-                    hintStyle: TextStyle(fontSize: 11.0)),
+                  ),
+                ],
               ),
             ),
           ],
         ),
-      )),
+      ),
     );
 
     // Center(child: Container(
@@ -487,16 +525,17 @@ class RestaurantsPage extends StatelessWidget {
         ));
   }
 
-  Widget _buildRestaurantsListView(BuildContext context) {
+  Widget _buildRestaurantsListView(BuildContext context, MainModel model) {
     return Expanded(
+      flex: 1,
       child: ListView.builder(
         padding: EdgeInsets.only(top: 0.0, bottom: 100.0),
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: _restaurants.length,
+        itemCount: model.allRestaurants.length,
         itemBuilder: (BuildContext context, int index) {
-          return _buildRestaurantCard(context, index);
+          return _buildRestaurantCard(context, index, model);
         },
       ),
     );
@@ -504,30 +543,49 @@ class RestaurantsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // if(_restaurants == null)
     // final double deviceWidth = MediaQuery.of(context).size.width;
     // final double targetWith = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
-    final double deviceHeight = MediaQuery.of(context).size.height;
-    final double restaurantCardHeight = 130;
-    final double targetHeight = (deviceHeight / 2) +
-        (restaurantCardHeight * _restaurants.length) +
-        restaurantCardHeight;
+
     return Scaffold(
-        body: Stack(
-      children: <Widget>[
-        SingleChildScrollView(
-          child: Container(
-            height: targetHeight,
-            child: Column(
-              children: <Widget>[
-                _buildAdsListView(),
-                _buildOffersArea(),
-                _buildRestaurantsListView(context),
-              ],
-            ),
+      // appBar: AppBar(backgroundColor: Colors.transparent,title: _buildSearch(context),),
+      drawer: _buildSideDrawer(context),
+      body: ScopedModelDescendant<MainModel>(
+          builder: (BuildContext context, Widget child, MainModel model) {
+        final double deviceHeight = MediaQuery.of(context).size.height;
+        final double restaurantCardHeight = 130;
+
+        final countOfRestaurants =
+            model.allRestaurants != null ? model.allRestaurants.length : 0;
+
+        final double targetHeight = (deviceHeight / 2) +
+            (restaurantCardHeight * countOfRestaurants) +
+            restaurantCardHeight;
+
+        return GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            FocusScope.of(context).requestFocus(new FocusNode());
+          },
+          child: Stack(
+            children: <Widget>[
+              SingleChildScrollView(
+                child: Container(
+                  height: targetHeight,
+                  child: Column(
+                    children: <Widget>[
+                      _buildAdsListView(),
+                      _buildOffersArea(),
+                      _buildRestaurantsListView(context, model),
+                    ],
+                  ),
+                ),
+              ),
+              _buildSearch(context),
+            ],
           ),
-        ),
-        _buildSearch(context),
-      ],
-    ));
+        );
+      }),
+    );
   }
 }

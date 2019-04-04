@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:orders_app/pages/home.dart';
 import './scope-models/main.dart';
-// import 'package:flutter/rendering.dart';
+import 'package:flutter/rendering.dart';
 import './pages/auth.dart';
 import './pages/products_admin.dart';
 import './pages/products.dart';
 import './pages/product.dart';
-import './models/product.dart';
+// import './models/product.dart';
 import 'package:scoped_model/scoped_model.dart';
 import './pages/restaurants.dart';
 
 void main() {
-  // final bool debugMode = true;
+  final bool debugMode = true;
   // debugPaintSizeEnabled = debugMode;
   // debugPaintBaselinesEnabled = debugMode;
   // debugPaintPointersEnabled = debugMode;
@@ -26,7 +27,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  List<Product> _products = [];
+  // List<Product> _products = [];
   final bool statrtWithLoginPage = false;
 
   @override
@@ -44,52 +45,53 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return ScopedModel<MainModel>(
-      model:MainModel(),
-      child: MaterialApp(
-      // debugShowMaterialGrid: true,
-      title: 'Orders App',
-      theme: ThemeData(
-        // brightness: Brightness.light,
-        primarySwatch: Colors.green,
-        accentColor: Colors.lime,
-        fontFamily: 'Cairo',
-        buttonColor: Colors.red,
-      ),
+        model: MainModel(),
+        child: MaterialApp(
+          
+          // debugShowMaterialGrid: true,
+          // title: 'Orders App',
+          theme: ThemeData(
+            // brightness: Brightness.light,
+            primarySwatch: Colors.green,
+            accentColor: Colors.lime,
+            fontFamily: 'Cairo',
+            buttonColor: Colors.red,
+          ),
 
-      // home: AuthPage(),
-      routes: {
-        '/': (BuildContext context) =>
-            statrtWithLoginPage == true ? AuthPage() : RestaurantsPage(), //ProductsPage(),
-        '/restaurants': (BuildContext context) => RestaurantsPage(),
-        '/products': (BuildContext context) => ProductsPage(),
-        '/admin': (BuildContext context) => ProductsAdminPage(),
-      },
-      onGenerateRoute: (RouteSettings settings) {
-        final List<String> pathElement = settings.name.split('/');
+          // home: AuthPage(),
+          routes: {
+            '/': (BuildContext context) => statrtWithLoginPage == true
+                ? AuthPage()
+                : HomePage(), //ProductsPage(),
+            '/login': (BuildContext context) => AuthPage(),
+            '/restaurants': (BuildContext context) => HomePage(), //RestaurantsPage(),
+            '/products': (BuildContext context) => ProductsPage(),
+            '/admin': (BuildContext context) => ProductsAdminPage(),
+          },
+          onGenerateRoute: (RouteSettings settings) {
+            final List<String> pathElement = settings.name.split('/');
 
-        if (pathElement[0] != '') {
-          return null;
-        }
+            if (pathElement[0] != '') {
+              return null;
+            }
 
-        if (pathElement[1] == 'product') {
-          final int index = int.parse(pathElement[2]);
+            if (pathElement[1] == 'product') {
+              final int index = int.parse(pathElement[2]);
 
-          return MaterialPageRoute<bool>(
-            builder: (BuildContext context) => ProductPage(index),
-          );
-        }
+              return MaterialPageRoute<bool>(
+                builder: (BuildContext context) => ProductPage(index),
+              );
+            }
 
-        return null;
-      },
-      onUnknownRoute: (RouteSettings settings) {
-        return MaterialPageRoute(
-            builder: (BuildContext context) => ProductsPage());
-      },
-    ));
+            return null;
+          },
+          onUnknownRoute: (RouteSettings settings) {
+            return MaterialPageRoute(
+                builder: (BuildContext context) => ProductsPage());
+          },
+        ));
   }
 }
