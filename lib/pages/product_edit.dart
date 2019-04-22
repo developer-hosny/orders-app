@@ -82,7 +82,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
             }));
   }
 
-  void _submitForm(
+  void _submitForm(model, 
       Function addProduct, Function updateProduct, Function setSelectedProduct,
       [int selectedProductIndex]) {
     if (!_formKey.currentState.validate()) {
@@ -92,7 +92,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
     _formKey.currentState.save();
 
     if (selectedProductIndex == null) {
-      addProduct(_formData['title'], _formData['description'],
+      addProduct(model, _formData['title'], _formData['description'],
           _formData['image'], _formData['price']);
     } else {
       updateProduct(_formData['title'], _formData['description'],
@@ -137,7 +137,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
           child: Text('Save'),
           textColor: Colors.white,
           color: Theme.of(context).primaryColor,
-          onPressed: () => _submitForm(model.addProduct, model.updateProduct,
+          onPressed: () => _submitForm(model, model.addProduct, model.updateProduct,
               model.selectProduct, model.selectedProductIndex),
         );
       },

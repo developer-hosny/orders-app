@@ -24,7 +24,7 @@ class HeroHeader implements SliverPersistentHeaderDelegate {
     return Stack(
       fit: StackFit.expand,
       children: [
-        Image.asset(
+        Image.network(
           'assets/food.jpg',
           fit: BoxFit.cover,
         ),
@@ -75,6 +75,9 @@ class HeroHeader implements SliverPersistentHeaderDelegate {
 }
 
 class ProductsPage extends StatefulWidget {
+  MainModel model = MainModel();
+  ProductsPage(this.model);
+
   @override
   _ProductsPageState createState() => _ProductsPageState();
 }
@@ -85,6 +88,13 @@ class _ProductsPageState extends State<ProductsPage> {
   final VoidCallback onLayoutToggle;
   List<int> _itemCount = new List<int>.generate(100, (i) => 0);
   double totalPrice = 0.0;
+
+  @override
+  void initState() {
+    print('selectedRestaurantIndex' + widget.model.selectedRestaurantIndex.toString());
+    widget.model.fetchProducts();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -153,42 +163,6 @@ class _ProductsPageState extends State<ProductsPage> {
         ));
   }
 
-  // Widget _showBottomSheet(BuildContext context, index) {
-  //   return Stack(
-  //     children: <Widget>[
-  //       Positioned(
-  //           height: 100.0,
-  //           width: MediaQuery.of(context).size.width,
-  //           bottom: 0.0,
-  //           left: 0.0,
-  //           right: 0.0,
-  //           child: Container(
-  //             height: 100.0,
-  //             width: MediaQuery.of(context).size.width,
-  //             child: Column(children: <Widget>[
-  //               ListTile(
-  //                 leading: Icon(Icons.add_shopping_cart),
-  //                 title: Text(_itemCount[index].toString()),
-  //               )
-  //             ]),
-  //           ))
-  //     ],
-  //   );
-
-  //  showModalBottomSheet(
-  //     context: context,
-  //     builder: (context) {
-  //       return Container(
-  //         height: 100.0,
-  //         child: Column(children: <Widget>[
-  //           ListTile(
-  //             leading: Icon(Icons.add_shopping_cart),
-  //             title: Text(_itemCount[index].toString()),
-  //           )
-  //         ]),
-  //       );
-  //     });
-  // }
   void calcOrder(int index, String addOrRemove, price) {
     // List<Product> products;
 

@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:orders_app/pages/restaurants.dart';
 import 'package:orders_app/pages/auth.dart';
+import 'package:orders_app/scope-models/main.dart';
 
 class HomePage extends StatefulWidget {
+  MainModel model;
+  HomePage(this.model);
+
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   int _selectedTabIndex = 0;
-
+  @override
+  void initState() {
+    widget.model.fetchRestaurants();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

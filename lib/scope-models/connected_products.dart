@@ -1,37 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:orders_app/scope-models/main.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../models/product.dart';
 import '../models/user.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 mixin ConnectedProductsModel on Model {
   List<Product> _products = [];
-  User _authenticatedUser;
+  // User _authenticatedUser;
   int _selProductIndex;
 
-  void addProduct(
+  void addProduct(MainModel model,
       String title, String description, String image, double price) {
+      // MainModel model = MainModel();
+      print('>>>>>>>> '+ model.authenticatedUser.id.toString());
+      String restaurantId;
+    Firestore.instance
+        .collection('restaurants')
+        .where("userId", isEqualTo: model.authenticatedUser.id)
+        .snapshots()
+        .listen((data) {
+      data.documents.forEach((doc) {
+        // print(doc.documentID);
+        restaurantId = doc['id'];
+      });
+    });
+
     Map<String, dynamic> productData = {
+      'restaurantId': restaurantId,
       'title': title,
       'description': description,
-      'image': '',
+      'image': 'http://www.webdo.tn/wp-content/uploads/2017/10/kfc.jpg',
       'price': price,
     };
-    http.post(
-        'https://firestore.googleapis.com/v1/projects/orders-app-d0c2a/databases/default/decoumnets/products',
-        body: json.encode(productData));
 
-    final Product newProduct = Product(
-        title: title,
-        description: description,
-        image: image,
-        price: price,
-        userEmail: 'a@a.com',
-        userId: '1'
-        // userEmail: _authenticatedUser.email,
-        // userId: _authenticatedUser.id
-        );
-    _products.add(newProduct);
+    Firestore.instance.collection('products').document().setData(productData);
+
     notifyListeners();
   }
 }
@@ -40,6 +45,17 @@ mixin ProductsModel on ConnectedProductsModel {
   bool _showFavorites = false;
 
   List<Product> get allProducts {
+    // StreamBuilder<QuerySnapshot>(
+    //     stream: Firestore.instance.collection('products').snapshots(),
+    //     builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+    //       if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+    //       switch (snapshot.connectionState) {
+    //         case ConnectionState.waiting:
+    //           return new Text('Loading...');
+    //         default:
+    //           return Container();
+    //       }
+    //     });
     return List.from(_products);
   }
 
@@ -66,8 +82,9 @@ mixin ProductsModel on ConnectedProductsModel {
   }
 
   void updateProduct(
-      String title, String description, String image, double price) {
+      String id, String title, String description, String image, double price) {
     final Product updatedProduct = Product(
+        id: id,
         title: title,
         description: description,
         image: image,
@@ -88,6 +105,7 @@ mixin ProductsModel on ConnectedProductsModel {
     final bool isCurrentlyFavorite = _products[selectedProductIndex].isFavorite;
     final bool newFavoriteStatus = !isCurrentlyFavorite;
     final Product updateProduct = Product(
+        id: selectedProduct.id,
         title: selectedProduct.title,
         description: selectedProduct.description,
         price: selectedProduct.price,
@@ -112,10 +130,47 @@ mixin ProductsModel on ConnectedProductsModel {
     _showFavorites = !_showFavorites;
     notifyListeners();
   }
-}
 
-mixin UserModel on ConnectedProductsModel {
-  void login(String email, String password) {
-    _authenticatedUser = User(id: 'udiuhid', email: email, password: password);
+  void fetchProducts() {
+    print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+    final List<Product> fetechedProductsList = [];
+
+    MainModel model = MainModel();
+
+    Firestore.instance
+        .collection('products')
+        .where("restaurantId", isEqualTo: model.selectedRestaurantIndex)
+        .snapshots()
+        .listen((data) {
+      data.documents.forEach((doc) {
+        // print(">>>>>>>>> " + doc["title"].toString());
+        final Product product = Product(
+          id: doc['id'],
+          restaurantId: doc['restaurantId'],
+          title: doc['title'],
+          description: doc['description'],
+          image: doc['image'],
+          price: doc['price'],
+          userEmail: 'a@a.com',
+          userId: '11',
+        );
+        fetechedProductsList.add(product);
+      });
+      _products = fetechedProductsList;
+      notifyListeners();
+    });
   }
 }
+
+// mixin UserModel on ConnectedProductsModel {
+//   void updateScopedUserData(String id, String email) {
+//     _authenticatedUser = User(id: id, email: email);
+//     print('_authenticatedUser >>>>>>>>>> ' + authenticatedUser.email.toString());
+//     notifyListeners();
+//   }
+
+//   User get authenticatedUser{
+//     return _authenticatedUser;
+//   }
+
+// }

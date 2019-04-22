@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:orders_app/pages/home.dart';
+import 'package:orders_app/pages/restaurant_edit.dart';
 import './scope-models/main.dart';
 import 'package:flutter/rendering.dart';
 import './pages/auth.dart';
@@ -47,8 +48,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final MainModel model = MainModel();
+
     return ScopedModel<MainModel>(
-        model: MainModel(),
+        model: model,
         child: MaterialApp(
           
           // debugShowMaterialGrid: true,
@@ -65,10 +68,11 @@ class _MyAppState extends State<MyApp> {
           routes: {
             '/': (BuildContext context) => statrtWithLoginPage == true
                 ? AuthPage()
-                : HomePage(), //ProductsPage(),
+                : HomePage(model), //ProductsPage(),
             '/login': (BuildContext context) => AuthPage(),
-            '/restaurants': (BuildContext context) => HomePage(), //RestaurantsPage(),
-            '/products': (BuildContext context) => ProductsPage(),
+            '/restaurants': (BuildContext context) => HomePage(model), //RestaurantsPage(),
+            '/restaurant_edit': (BuildContext context) => RestaurantsEditPage(), //RestaurantsPage(),
+            '/products': (BuildContext context) => ProductsPage(model),
             '/admin': (BuildContext context) => ProductsAdminPage(),
           },
           onGenerateRoute: (RouteSettings settings) {
@@ -90,7 +94,7 @@ class _MyAppState extends State<MyApp> {
           },
           onUnknownRoute: (RouteSettings settings) {
             return MaterialPageRoute(
-                builder: (BuildContext context) => ProductsPage());
+                builder: (BuildContext context) => HomePage(model));
           },
         ));
   }
